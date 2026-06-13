@@ -1,0 +1,203 @@
+/* CSS RESET */ 
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  font-family: 'Lato', sans-serif;
+  text-rendering: optimizeSpeed;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+.tribute-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 13.75rem;
+  gap: 2rem;
+  align-items: center;
+  background-image: url('/main/tribute/images/bg.PNG');
+  height: 100vh;
+}
+
+input {
+  display: none;
+}
+
+#who:checked ~ .text-panel .who-text,
+#who:checked ~ .image-panel .who-img,
+#works:checked ~ .text-panel .works-text,
+#works:checked ~ .image-panel .works-img,
+#legacy:checked ~ .text-panel .legacy-text,
+#legacy:checked ~ .image-panel .legacy-img {
+  display: block;
+}
+
+.image-panel {
+  width: 100%;
+  height: 40rem;
+  border-radius: 1rem;
+  background-image: url('/main/tribute/images/frame.PNG');
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+}
+
+.buttons-panel label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  border-radius: 10px 10px;
+  
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 1.45rem;
+  text-align: center !important;
+  margin: 30px 10px 30px 0px;
+}
+
+/* For the shelves */
+
+.shelf-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.shelf-labels label {
+  position: relative;
+  height: 3.8rem;
+  cursor: pointer;
+  isolation: isolate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+/* the word */
+.shelf-labels label span {
+ .shelf-labels label span {
+  position: relative;
+  z-index: 2;
+
+  transform: translateY(0);
+  transition: all 800ms ease;
+}
+}
+
+/* the shelf */
+.shelf-labels label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.65rem;
+  height: 0.42rem;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    to bottom,
+    #2b2925,
+    #11100e
+  );
+
+  box-shadow:
+    0 0.25rem 0.45rem rgba(0, 0, 0, 0.35),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.18);
+}
+
+/* soft shadow under the word */
+.shelf-labels label span::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -0.45rem;
+  height: 0.25rem;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.28);
+  filter: blur(0.2rem);
+  opacity: 0.45;
+
+  transition:
+    opacity 800ms ease,
+    transform 800ms ease;
+}
+
+/* hover effect */
+.shelf-labels label:hover span {
+  transform: translateY(-0.7rem);
+  color: #050505;
+  letter-spacing: 0.09em;
+  text-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.18);
+}
+
+.shelf-labels label:hover span::after {
+  opacity: 0.18;
+  transform: translateY(0.55rem) scaleX(0.75);
+}
