@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.mockup {
+  width: 450px;
+  height: 400px;
+  border: 2px solid black;
+  background: white;
+}
+
+.mock-title {
+  height: 24px;
+  border-bottom: 2px solid black;
+  padding-left: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.mock-content {
+  padding: 10px 14px 0;
+}
+
+.top-box {
+  width: 100%;
+  height: 68px;
+  border: 3px solid black;
+  background: #8f7cc7;
+}
+
+.bottom-boxes {
+  display: flex;
+  gap: 11px;
+  margin-top: 14px;
+}
+
+.box {
+  flex: 1;
+  height: 246px;
+  border: 3px solid black;
+}
+
+.red-box {
+  background: #e46266;
+}
+
+.green-box {
+  background: #94c47d;
+}
+
+.orange-box {
+  background: #ff9500;
+}
