@@ -64,6 +64,14 @@ h6 {
   overflow-wrap: break-word;
 }
 
+.panel .image {
+  display: none;
+}
+
+input[type="radio"]{
+  display: none;
+}
+
 .tribute-tabs {
   display: grid;
   grid-template-columns: 1fr 1.2fr 13.75rem;
@@ -86,14 +94,40 @@ input {
   display: block;
 }
 
+/* Images */
 .image-panel {
+  position: relative;
   width: 100%;
   height: 40rem;
-  border-radius: 1rem;
+}
+
+/* the changing artwork */
+.image-panel img {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: 700px;
+  height: 75%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  z-index: 1;
+}
+
+/* the frame layer ABOVE the image */
+.image-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: url('/main/tribute/images/frame.PNG');
   background-size: contain;
   background-repeat: no-repeat;
-  
+  background-position: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.who-img {
+ 
 }
 
 .buttons {
@@ -140,13 +174,10 @@ input {
 
 /* the word */
 .shelf-labels label span {
- .shelf-labels label span {
   position: relative;
   z-index: 2;
-
   transform: translateY(0);
   transition: all 800ms ease;
-}
 }
 
 /* the shelf */
