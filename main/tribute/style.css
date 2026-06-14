@@ -100,7 +100,10 @@ input {
   display: grid;
   place-items: center;
   min-width: 0;
+  /* background-color: gray; */
 }
+
+
 
 /* This box controls the frame size */
 .frame-box {
@@ -109,18 +112,18 @@ input {
   aspect-ratio: 4 / 5;
 }
 
-/* The actual picture opening inside the frame */
+/* The actual picture opening inside rhe frame */
 .art-window {
   position: absolute;
   z-index: 1;
   /* img sizing */
   top: 10%;
-  left: 12%;
-  right: 17%;
+  left: 15%;
+  right: 20%;
   bottom: 18%;
 
   overflow: hidden;
-  background: #d8d0c2;
+  background: #d8d0c2; 
 }
 
 /* The artwork itself */
@@ -146,9 +149,7 @@ input {
   pointer-events: none;
 }
 
-.who-img {
- 
-}
+
 
 .buttons {
   display: flex;
@@ -189,6 +190,7 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 30px;
   
 }
 
@@ -251,4 +253,123 @@ input {
 .shelf-labels label:hover span::after {
   opacity: 0.18;
   transform: translateY(0.55rem) scaleX(0.75);
+}
+
+
+/* Text */
+
+.text-panel {
+  
+  text-align: center;
+  margin-left: 50px;
+  font-size: 1.15rem;
+}
+
+
+/* Added layout adjustments */
+
+.tribute-tabs {
+  grid-template-columns:
+    minmax(18rem, 1fr)
+    minmax(18rem, 32rem)
+    minmax(18rem, 1fr);
+
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(2rem, 5vw, 6rem);
+  row-gap: 1.5rem;
+
+  padding: clamp(1.5rem, 4vw, 4rem);
+  background-size: cover;
+  background-position: center;
+}
+
+.tribute-title {
+  grid-column: 1 / -1;
+  text-align: center;
+
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.text-panel {
+  grid-column: 1;
+  justify-self: center;
+  max-width: 34rem;
+  text-align: left;
+}
+
+.text-panel h2 {
+  font-size: clamp(1.5rem, 2vw, 2.1rem);
+  margin-bottom: 1rem;
+}
+
+.text-panel p {
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+
+.image-panel {
+  grid-column: 2;
+  justify-self: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.buttons-panel {
+  grid-column: 3;
+  justify-self: center;
+  width: min(100%, 17rem);
+}
+
+.image-caption {
+  max-width: 28rem;
+  min-height: 2.8rem;
+  transform: translateY(-90%);
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* To Make text, image, and caption switch together */
+
+input[type="radio"] {
+  display: none;
+}
+
+.text-panel .panel,
+.art-window .image,
+.image-caption .caption {
+  display: none;
+}
+
+#who:checked ~ .text-panel .who-text,
+#who:checked ~ .image-panel .who-img,
+#who:checked ~ .image-panel .who-caption {
+  display: block;
+}
+
+#works:checked ~ .text-panel .works-text,
+#works:checked ~ .image-panel .works-img,
+#works:checked ~ .image-panel .works-caption {
+  display: block;
+}
+
+#why:checked ~ .text-panel .why-text,
+#why:checked ~ .image-panel .why-img,
+#why:checked ~ .image-panel .why-caption {
+  display: block;
+}
+
+#legacy:checked ~ .text-panel .legacy-text,
+#legacy:checked ~ .image-panel .legacy-img,
+#legacy:checked ~ .image-panel .legacy-caption {
+  display: block;
 }
