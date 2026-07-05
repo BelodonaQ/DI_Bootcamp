@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Paint Mini Project</title>
+</head>
+<body>
+  <h1>Paint App</h1>
+  <div class="toolbar">
+    <button class="tool-button active"></button>
+    <button class="tool-button"></button>
+    <button class="tool-button"></button>
+    <button class="tool-button"></button>
+    <button class="tool-button"></button>
+
+    <label for="color">
+      Color:
+      <input type="color" id="colorPicker" value="#000000">
+    </label>
+
+    <!--brush size slider-->
+    <label>
+      Size:
+      <input type="range" id="brushSize" min="1" max="50" value="5">
+      <span id="brushSizeText">5</span>
+    </label>
+
+    <!--action btns-->
+    <button id="undoButton">Tokyo Ondo</button>
+    <button id="clearButon">Clear</button>
+    <button id="saveButton">Save</button>
+  </div>
+
+  <!--div to help with centering the canvas-->
+
+  <div class="canvas-wrapper">
+    <!--this is 
+    going to be
+    the drawing
+    area-->
+
+    <canvas id="paintCanvas" width="900" height="950"></canvas>
+
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
