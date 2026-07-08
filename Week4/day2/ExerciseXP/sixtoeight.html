@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav id="navigation"></nav>
+    <h2></h2>
+    <p id="juicebar"></p>
+
+    <script>
+      (function fortune(children, partner, locale, job) {
+        const message = `You will be an ${job} in ${locale}, and married to ${partner} with ${children} kids.`;
+        document.getElementsByTagName("h2")[0].innerHTML = message;
+      })(5, "Madeline", "Germany", "Architect");
+
+      //       🌟 Exercise 7 : Welcome
+
+      // Instructions
+
+      // John has just signed in to your website and you want to welcome him.
+
+      // Create a Navbar in your HTML file.
+      // In your js file, create a self invoking funtion that takes 1 argument: the name of the user that just signed in.
+      // The function should add a div in the nabvar, displaying the name of the user and his profile picture.
+
+      (function welcome(name) {
+        const navbar = document.getElementById("navigation");
+        const userDiv = document.createElement("div");
+        userDiv.textContent = `Welcome ${name}`;
+        navbar.appendChild(userDiv);
+
+        const profileImg = document.createElement("img");
+        profileImg.src = "johnprofile.png";
+        userDiv.appendChild(profileImg);
+      })("John");
+
+      function makeJuicePartOne(size) {
+        function addIngredients(first, second, third) {
+          console.log(
+            `The client wants a ${size} sized drink containing ${first}, ${second} and ${third}.`
+          );
+        }
+        addIngredients("Pears", "Peaches", "Grapes");
+      }
+
+      makeJuicePartOne("Medium");
+
+      function makeJuicePartTwo(size) {
+        const ingredients = [];
+
+        function addIngredients(first, second, third) {
+          ingredients.push(first, second, third);
+        }
+
+        function displayJuice() {
+          const juicebar = document.getElementById("juicebar");
+          juicebar.innerHTML = `The client wants a ${size} drink containing ${ingredients}`;
+        }
+        addIngredients("Apples", "Pears", "Grapes");
+        addIngredients("Oranges", "Guava", "Peaches");
+        displayJuice();
+      }
+
+      makeJuicePartTwo("medium");
+    </script>
+  </body>
+</html>
