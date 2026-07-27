@@ -624,3 +624,39 @@ canvas.addEventListener("pointermove", draw);
 canvas.addEventListener("pointerup", stopDrawing);
 
 canvas.addEventListener("pointerleave", stopDrawing);
+
+const calculator = (num1, operator, num2) => {
+  let result = 0;
+  num1 = parseInt(num1);
+  num2 = parseInt(num2);
+
+  switch(operator) {
+    case '+' :
+      result = num1 + num2;
+      break
+    case '-':
+      result = num1 - num2;
+      break
+    case '/':
+      result = num1 / num2;
+      break
+    case '*':
+      result = num1 * num2;
+      break
+    
+      default:
+        console.log('Please use a valid operator')
+
+      
+    
+  }
+  
+    return result;
+    
+  }
+
+
+
+calculator(6, '*', 12)
+
+// fundamentals fn

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="gif-form">
+      <label for="category">GIF category:</label>
+
+      <input
+        type="text"
+        id="category"
+        placeholder="For example: sun"
+        required
+      />
+
+      <button type="submit">Get GIF</button>
+    </form>
+
+    <button type="button" id="delete-all">Delete All</button>
+
+    <div id="gif-container"></div>
+
+    <script defer>
+      const gitForm = document.querySelector('#git-form');
+      const categoryInput = document.querySelector('#catergory');
+      const deleteAllButton = document.querySelector('#delete-all');
+      const gifContainer = document.querySelector('#gif-container');
+
+      gitForm.addEventListener("submit", async function(event) {
+        event.preventDefault;
+
+        const category = categoryInput.value.trim();
+
+        if (category === "") {
+          return;
+        }
+        console.log(category);
+      });
+    </script>
+  </body>
+</html>
