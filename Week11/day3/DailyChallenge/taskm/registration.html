@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | User Management</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #172033;
+        background: #f3f6fb;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+      }
+
+      main {
+        width: min(100%, 32rem);
+        padding: 2rem;
+        border: 1px solid #dbe3ef;
+        border-radius: 1rem;
+        background: white;
+        box-shadow: 0 1rem 2.5rem rgb(36 55 87 / 10%);
+      }
+
+      h1 { margin: 0 0 0.35rem; }
+      .intro { margin: 0 0 1.5rem; color: #5a6578; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .field { margin-bottom: 1rem; }
+
+      label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-weight: 650;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem 0.85rem;
+        border: 1px solid #aeb9cb;
+        border-radius: 0.55rem;
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 3px solid rgb(49 104 213 / 20%);
+        border-color: #3168d5;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 0;
+        border-radius: 0.55rem;
+        color: white;
+        background: #2457bb;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:disabled { cursor: not-allowed; opacity: 0.45; }
+      .message { min-height: 1.5rem; margin: 1rem 0 0; }
+      .message.success { color: #087443; }
+      .message.error { color: #b42318; }
+      .hint { margin: 0.4rem 0 0; color: #5a6578; font-size: 0.9rem; }
+      .switch { margin: 1.25rem 0 0; text-align: center; color: #5a6578; }
+      a { color: #2457bb; }
+
+      @media (max-width: 32rem) {
+        .row { grid-template-columns: 1fr; gap: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Create an account</h1>
+      <p class="intro">All five fields are required.</p>
+
+      <form id="registration-form" action="/register" method="post">
+        <div class="row">
+          <div class="field">
+            <label for="first_name">Name</label>
+            <input id="first_name" name="first_name" type="text" maxlength="100" autocomplete="given-name" required />
+          </div>
+
+          <div class="field">
+            <label for="last_name">Last name</label>
+            <input id="last_name" name="last_name" type="text" maxlength="100" autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" maxlength="254" autocomplete="email" required />
+        </div>
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" maxlength="50" autocomplete="username" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" aria-describedby="password-help" required />
+          <p id="password-help" class="hint">Use 8–72 bytes. Standard letters, numbers, and symbols each count as one byte.</p>
+        </div>
+
+        <button id="submit-button" type="submit" disabled>Register</button>
+      </form>
+
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <p class="switch">Already registered? <a href="/login.html">Log in</a></p>
+    </main>
+
+    <script>
+      const form = document.querySelector("#registration-form");
+      const submitButton = document.querySelector("#submit-button");
+      const message = document.querySelector("#message");
+      const requiredInputs = [...form.querySelectorAll("input[required]")];
+      const passwordInput = document.querySelector("#password");
+      const textEncoder = new TextEncoder();
+      let isSubmitting = false;
+      
+
+      function validatePasswordLength() {
+        const passwordBytes = textEncoder.encode(passwordInput.value).length;
+
+        if (passwordInput.value !== "" && passwordBytes < 8) {
+          passwordInput.setCustomValidity("Password must be at least 8 bytes.");
+        } else if (passwordBytes > 72) {
+          passwordInput.setCustomValidity("Password must be at most 72 bytes.");
+        } else {
+          passwordInput.setCustomValidity("");
+        }
+      }
+
+      function syncSubmitButton() {
+        validatePasswordLength();
+        const allFieldsHaveText = requiredInputs.every((input) => input.value.trim() !== "");
+        submitButton.disabled = isSubmitting || !allFieldsHaveText;
+      }
+
+      form.addEventListener("input", syncSubmitButton);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        isSubmitting = true;
+        form.setAttribute("aria-busy", "true");
+        syncSubmitButton();
+        message.className = "message";
+        message.textContent = "Creating your account…";
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(formData)),
+          });
+          const result = await response.json().catch(() => ({}));
+
+          message.textContent = response.ok
+            ? result.message || "Registration successful"
+            : result.error || `Registration failed (${response.status})`;
+          message.className = response.ok ? "message success" : "message error";
+
+          if (response.ok) form.reset();
+        } catch (error) {
+          message.textContent = "Could not connect to the server. Please try again.";
+          message.className = "message error";
+        } finally {
+          isSubmitting = false;
+          form.removeAttribute("aria-busy");
+          syncSubmitButton();
+        }
+      });
+
+      syncSubmitButton();
+    </script>
+  </body>
+</html>

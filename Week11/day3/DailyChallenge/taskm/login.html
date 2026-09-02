@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | User Management</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #172033;
+        background: #f3f6fb;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+      }
+
+      main {
+        width: min(100%, 28rem);
+        padding: 2rem;
+        border: 1px solid #dbe3ef;
+        border-radius: 1rem;
+        background: white;
+        box-shadow: 0 1rem 2.5rem rgb(36 55 87 / 10%);
+      }
+
+      h1 { margin: 0 0 0.35rem; }
+      .intro { margin: 0 0 1.5rem; color: #5a6578; }
+      .field { margin-bottom: 1rem; }
+
+      label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-weight: 650;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem 0.85rem;
+        border: 1px solid #aeb9cb;
+        border-radius: 0.55rem;
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 3px solid rgb(49 104 213 / 20%);
+        border-color: #3168d5;
+      }
+
+      button {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 0;
+        border-radius: 0.55rem;
+        color: white;
+        background: #2457bb;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:disabled { cursor: not-allowed; opacity: 0.45; }
+      .message { min-height: 1.5rem; margin: 1rem 0 0; }
+      .message.success { color: #087443; }
+      .message.error { color: #b42318; }
+      .switch { margin: 1.25rem 0 0; text-align: center; color: #5a6578; }
+      a { color: #2457bb; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome back</h1>
+      <p class="intro">Log in with your username and password.</p>
+
+      <form id="login-form" action="/login" method="post">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" maxlength="50" autocomplete="username" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+
+        <button id="submit-button" type="submit" disabled>Log in</button>
+      </form>
+
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <p class="switch">Need an account? <a href="/registration.html">Register</a></p>
+    </main>
+
+    <script>
+      const form = document.querySelector("#login-form");
+      const submitButton = document.querySelector("#submit-button");
+      const message = document.querySelector("#message");
+      const requiredInputs = [...form.querySelectorAll("input[required]")];
+      let isSubmitting = false;
+
+      function syncSubmitButton() {
+        const allFieldsHaveText = requiredInputs.every((input) => input.value.trim() !== "");
+        submitButton.disabled = isSubmitting || !allFieldsHaveText;
+      }
+
+      form.addEventListener("input", syncSubmitButton);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        isSubmitting = true;
+        form.setAttribute("aria-busy", "true");
+        syncSubmitButton();
+        message.className = "message";
+        message.textContent = "Logging in…";
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(formData)),
+          });
+          const result = await response.json().catch(() => ({}));
+
+          message.textContent = response.ok
+            ? result.message || "Login successful"
+            : result.error || `Login failed (${response.status})`;
+          message.className = response.ok ? "message success" : "message error";
+
+          if (response.ok) form.reset();
+        } catch (error) {
+          message.textContent = "Could not connect to the server. Please try again.";
+          message.className = "message error";
+        } finally {
+          isSubmitting = false;
+          form.removeAttribute("aria-busy");
+          syncSubmitButton();
+        }
+      });
+
+      syncSubmitButton();
+    </script>
+  </body>
+</html>
